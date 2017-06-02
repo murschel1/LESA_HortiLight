@@ -5,6 +5,7 @@ import numpy as np
 import socket
 import sys
 import datetime
+import RPi.GPIO as GPIO
 
 #TCP/IP related
 TCP_IP = '192.168.0.249'
@@ -41,7 +42,7 @@ def Al_CallBack():
     AllStatus = 1
     EnaStatus = 0 
     s.send('ENA')
-    EN_Button.configure(text = 'Disabled LED')
+    EN_Button.configure(text = 'Disable LED')
     time.sleep(0.5)
     s.send('UVX 100')
     W_UV.set(100)
@@ -290,21 +291,94 @@ def main():
         Elements_H = Elements[1].split(':')
         Time = datetime.datetime(int(Elements_Y[0]), int(Elements_Y[1]), int(Elements_Y[2]), int(Elements_H[0]), int(Elements_H[1]), int(Elements_H[2]))
         if Time > datetime.datetime.now():
-          Elements = data[i-1].split(' ')
-          UV_value = float(Elements[2])
-          DB_value = float(Elements[3])
-          BL_value = float(Elements[4])
-          GR_value = float(Elements[5])
-          RE_value = float(Elements[6])
-          IR_value = float(Elements[7])
-          W_UV.set(UV_value)
-          W_DB.set(DB_value)
-          W_BL.set(BL_value)
-          W_GR.set(GR_value)
-          W_RE.set(RE_value)
-          W_IR.set(IR_value)
-          print UV_value, DB_value, BL_value, GR_value, RE_value, IR_value
-          break
+          if float(Elements[2]) >= 0:
+          	if (i-1) >= 0:
+
+			UV_value = float(0)
+          		DB_value = float(0)
+          		BL_value = float(0)
+          		GR_value = float(0)
+          		RE_value = float(0)
+          		IR_value = float(0)
+		
+         		W_UV.set(UV_value)
+          		W_DB.set(DB_value)
+          		W_BL.set(BL_value)
+          		W_GR.set(GR_value)
+          		W_RE.set(RE_value)
+          		W_IR.set(IR_value)
+
+			GPIO.setmode(GPIO.BCM)
+			GPIO.setwarnings(False)
+
+			GPIO.setup(9, GPIO.OUT)
+			GPIO.setup(26, GPIO.OUT)
+			GPIO.setup(12, GPIO.OUT)
+			GPIO.setup(13, GPIO.OUT)
+			GPIO.setup(14, GPIO.OUT)
+			GPIO.setup(15, GPIO.OUT)
+
+			GPIO.output(9, 1) #UV
+			GPIO.output(26, 1) #Deep blue
+			GPIO.output(12, 1) #Blue
+			GPIO.output(13, 1) #Green
+			GPIO.output(14, 1) #Red
+			GPIO.output(15, 1) #IR
+
+			#time.sleep(0.5)
+			 
+          		Elements = data[i-1].split(' ')
+
+          		UV_value = float(Elements[2])
+          		DB_value = float(Elements[3])
+          		BL_value = float(Elements[4])
+          		GR_value = float(Elements[5])
+          		RE_value = float(Elements[6])
+          		IR_value = float(Elements[7])
+		
+         		W_UV.set(UV_value)
+          		W_DB.set(DB_value)
+          		W_BL.set(BL_value)
+          		W_GR.set(GR_value)
+          		W_RE.set(RE_value)
+          		W_IR.set(IR_value)
+
+          		print UV_value, DB_value, BL_value, GR_value, RE_value, IR_value
+        		break
+	  else:
+
+		UV_value = float(0)
+          	DB_value = float(0)
+          	BL_value = float(0)
+          	GR_value = float(0)
+          	RE_value = float(0)
+          	IR_value = float(0)
+		
+         	W_UV.set(UV_value)
+          	W_DB.set(DB_value)
+          	W_BL.set(BL_value)
+          	W_GR.set(GR_value)
+          	W_RE.set(RE_value)
+          	W_IR.set(IR_value)
+
+		GPIO.setmode(GPIO.BCM)
+		GPIO.setwarnings(False)
+
+		GPIO.setup(9, GPIO.OUT)
+		GPIO.setup(26, GPIO.OUT)
+		GPIO.setup(12, GPIO.OUT)
+		GPIO.setup(13, GPIO.OUT)
+		GPIO.setup(14, GPIO.OUT)
+		GPIO.setup(15, GPIO.OUT)
+
+		GPIO.output(9, 0) #UV
+		GPIO.output(26, 0) #Deep blue
+		GPIO.output(12, 0) #Blue
+		GPIO.output(13, 0) #Green
+		GPIO.output(14, 0) #Red
+		GPIO.output(15, 0) #IR
+
+	
      # k = 0
      # date = str(datetime.datetime.now()).split(' ')
      # date_a = date[0].split('-')
