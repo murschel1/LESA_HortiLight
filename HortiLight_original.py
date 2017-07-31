@@ -336,12 +336,36 @@ def main():
           		RE_value = float(Elements[6])
           		IR_value = float(Elements[7])
 		
-         		W_UV.set(UV_value)
-          		W_DB.set(DB_value)
-          		W_BL.set(BL_value)
-          		W_GR.set(GR_value)
-          		W_RE.set(RE_value)
-          		W_IR.set(IR_value)
+
+			if UV_value > 0:
+         			W_UV.set(UV_value)
+			else:
+				GPIO.output(9, 0) #UV
+
+			if UV_value > 0:
+          			W_DB.set(DB_value)
+			else:
+				GPIO.output(26, 0) #Deep blue
+
+			if BL_value > 0:
+          			W_BL.set(BL_value)
+			else:
+				GPIO.output(12, 0) #Blue
+
+			if GR_value > 0:
+          			W_GR.set(GR_value)
+			else:
+				GPIO.output(13, 0) #Green
+
+			if RE_value > 0:
+          			W_RE.set(RE_value)
+			else:
+				GPIO.output(14, 0) #Red
+
+			if IR_value > 0:
+          			W_IR.set(IR_value)
+			else:
+				GPIO.output(15, 0) #IR
 
           		print UV_value, DB_value, BL_value, GR_value, RE_value, IR_value
         		break
